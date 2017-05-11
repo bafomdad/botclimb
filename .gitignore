@@ -1,0 +1,13 @@
+build/
+logs/
+.idea/
+gradle/
+config.ini
+META-INF/MANIFEST.MF
+gradlew
+gradlew.bat
+out/
+settings.gradle
+src/main/java/META-INF/MANIFEST.MF
+src/main/resources/logback.xml
+src/main/resources/pom.xml
