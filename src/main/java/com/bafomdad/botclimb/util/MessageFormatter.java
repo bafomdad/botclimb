@@ -38,22 +38,6 @@ public class MessageFormatter {
         if (BotClimb.debug) {
             System.out.println(message);
         }
-        if (message.contains("Welcome, you are in command of the server now.")) {
-            try {
-                EventListener.getStream().write("/maxplayers\n".getBytes("US-ASCII"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (message.contains("Max players is ")) {
-            String[] splitter = message.split("Max players is ");
-            int slots = Integer.parseInt(splitter[1]);
-            SoldatObjectHolder.INSTANCE.setSize(slots);
-        }
-        if (message.contains("Next map: ")) {
-            SoldatObjectHolder.INSTANCE.setCurrentMap(message.substring(message.lastIndexOf(" " ) + 1));
-            return false;
-        }
         if (message.contains("(TEAM)")) {
             String[] splitter = message.split(Pattern.quote("(") + "TEAM" + Pattern.quote(")"));
             if (splitter[1].startsWith("["))

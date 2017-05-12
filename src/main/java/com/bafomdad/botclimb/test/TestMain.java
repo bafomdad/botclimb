@@ -1,28 +1,37 @@
 package com.bafomdad.botclimb.test;
 
 import com.bafomdad.botclimb.BotClimb;
-import com.bafomdad.botclimb.api.ICommand;
-import com.bafomdad.botclimb.commands.CommandManager;
-import com.bafomdad.botclimb.util.MessageFormatter;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import javax.json.*;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Created by bafomdad on 5/1/2017.
  */
 public class TestMain {
 
-    static String IPADDRESS = "(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
-    static Pattern pattern = Pattern.compile(IPADDRESS);
-
     public static void main(String[] args) {
 
-        if (args.length < 1) {
-            System.out.println("Not enough args!");
-            return;
+        String address = BotClimb.config.address;
+        String port = BotClimb.config.port;
+
+        try {
+            URL url = new URL("http://api.soldat.pl/v0/server/" + address + "/" + port + "/players");
+
+            InputStream is = url.openStream();
+            JsonReader rdr = Json.createReader(is);
+
+            JsonObject obj = rdr.readObject();
+            JsonArray results = obj.getJsonArray("Players");
+            if (results.isEmpty()) {
+                System.out.println("Empty!");
+                return;
+            }
+            System.out.println(results.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        System.out.println("You got this, Travis");
     }
 }

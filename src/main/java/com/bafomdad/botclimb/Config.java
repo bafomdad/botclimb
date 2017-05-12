@@ -53,7 +53,7 @@ public class Config {
         try {
             Properties prop = new Properties();
             prop.setProperty("token", "bottokenhere");
-            prop.setProperty("ip", "localhost");
+            prop.setProperty("ip", "127.0.0.1");
             prop.setProperty("port", "9001");
             prop.setProperty("password", "serverpassword");
             prop.setProperty("channel", "channelname");

@@ -21,11 +21,9 @@ import java.util.Iterator;
  */
 public class EventListener {
 
-    private static OutputStream os = null;
+    public static OutputStream getStream() throws IOException {
 
-    public static OutputStream getStream() {
-
-        return os;
+        return BotClimb.socket.getOutputStream();
     }
 
     @EventSubscriber
@@ -80,7 +78,6 @@ public class EventListener {
                         s.getOutputStream().write(str.getBytes("US-ASCII"));
                     }
                     BotClimb.socket = s;
-                    os = s.getOutputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream(), "UTF-8"));
                     Iterator it = reader.lines().iterator();
                     while (it.hasNext()) {

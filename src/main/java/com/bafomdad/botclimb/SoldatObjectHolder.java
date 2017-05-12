@@ -1,5 +1,10 @@
 package com.bafomdad.botclimb;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,21 +17,18 @@ public final class SoldatObjectHolder {
 
     Map<Integer, String> playerList = new HashMap<Integer, String>();
     static int slots;
-    String currentMap = "ctf_Ash";
 
     public static SoldatObjectHolder INSTANCE;
 
     public static void init() {
 
         INSTANCE = new SoldatObjectHolder();
+        INSTANCE.setSize();
     }
 
-    public void setSize(int size) {
+    public void setSize() {
 
-        this.slots = size;
-        for (int i = 1; i <= size; i++) {
-            playerList.put(i, null);
-        }
+        this.slots = Integer.parseInt(getMaxPlayers());
     }
 
     public List<String> getPlayers() {
@@ -68,11 +70,28 @@ public final class SoldatObjectHolder {
 
     public String getCurrentMap() {
 
-        return currentMap;
+        return getJsonObject("CurrentMap", "ctf_Ash");
     }
 
-    public void setCurrentMap(String mapname) {
+    public String getJsonObject(String object, String fallback) {
 
-        currentMap = mapname;
+        try {
+            URL url = new URL("http://api.soldat.pl/v0/server/" + BotClimb.config.address + "/" + BotClimb.config.port);
+
+            InputStream is = url.openStream();
+            JsonReader rdr = Json.createReader(is);
+
+            JsonObject obj = rdr.readObject();
+            return obj.getString(object);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fallback;
+    }
+
+    private String getMaxPlayers() {
+
+        return getJsonObject("MaxPlayers", "0");
     }
 }
